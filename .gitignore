@@ -6,4 +6,6 @@ backend/node_modules/
 backend/dist/
 *.log
 
+project.excalidraw
+
 AUTHENTICATION_FLOW.md
