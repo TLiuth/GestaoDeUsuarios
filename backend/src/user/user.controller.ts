@@ -39,4 +39,19 @@ export class UserController {
         return this.userService.deleteUser(userId, targetId)
     }
 
+    @UseGuards(AuthenticatedGuard)
+    @Post('deleteItself')
+    async deleteItself(@Req() req: AuthRequest){
+        const userId = req.user?.id;
+        if (!userId) throw new UnauthorizedException("User not authenticated")
+
+        return this.userService.deleteItself(userId)
+    }
+
+    @UseGuards(AuthenticatedGuard)
+    @Get('listAll')
+    async getAllUsers(){
+        return this.userService.getAllUsers()
+    }
+
 }

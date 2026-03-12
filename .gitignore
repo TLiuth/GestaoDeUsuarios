@@ -5,3 +5,5 @@ backend/.env.local
 backend/node_modules/
 backend/dist/
 *.log
+
+AUTHENTICATION_FLOW.md
