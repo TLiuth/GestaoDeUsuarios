@@ -4,6 +4,7 @@ import { UserEntity } from './entities/user.entity';
 import { Repository } from 'typeorm';
 import bcrypt from "bcrypt"
 import { CreateUserDto } from './dto/createUserDto.dto';
+import { useSearchParams } from 'next/navigation';
 
 
 type UserType = {
@@ -139,6 +140,24 @@ export class UserService {
         await this.userRepository.delete({ id:targetId })
 
         return `User deleted from database:\n- Id: ${targetUser?.id}\n- Name: ${targetUser?.name}\n- Email: ${targetUser?.email}`
+    }
+
+    async deleteItself(userId: number){
+        const user = await this.userRepository.findOne({ where: { id: userId}, select: ["id"]})
+
+        if(!user){
+            throw new BadRequestException("User does not exist")
+        }
+
+        await this.userRepository.delete({ id:userId})
+
+        return "Account deleted"
+    }
+
+    async getAllUsers(){
+        const users = await this.userRepository.find({ select: ["id", "name", "email"]})
+
+        return users
     }
 
 
