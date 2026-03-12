@@ -8,5 +8,7 @@ export declare class UserService {
     private userRepository;
     private readonly logger;
     constructor(userRepository: Repository<UserEntity>);
-    validateAndCreateUser(createUserDto: CreateUserDto): Promise<void>;
+    validateAndCreateUser(createUserDto: CreateUserDto): Promise<string>;
+    findByEmailWithPassword(email: string): Promise<UserEntity | null>;
+    findById(id: number): Promise<UserEntity | null>;
 }

@@ -68,6 +68,7 @@ let UserService = UserService_1 = class UserService {
                 };
                 const entity = this.userRepository.create(user);
                 await this.userRepository.save(entity);
+                return "User created succesfully";
             }
             else {
                 throw new common_1.BadRequestException(`Password is required to create user`);
@@ -80,6 +81,12 @@ let UserService = UserService_1 = class UserService {
             this.logger.log(`Unknow error: ${error}`);
             throw new common_1.ServiceUnavailableException("Failed to create user");
         }
+    }
+    async findByEmailWithPassword(email) {
+        return await this.userRepository.findOne({ where: { email: email }, select: ['id', 'name', 'email', 'password'] });
+    }
+    async findById(id) {
+        return await this.userRepository.findOne({ where: { id: id }, select: ['id', 'name', 'email', 'password'] });
     }
 };
 exports.UserService = UserService;
