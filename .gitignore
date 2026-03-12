@@ -6,6 +6,11 @@ backend/node_modules/
 backend/dist/
 *.log
 
+frontend/.env
+frontend/.env.local
+frontend/node_modules/
+frontend/dist/
+
 project.excalidraw
 
 AUTHENTICATION_FLOW.md
