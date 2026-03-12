@@ -3,6 +3,7 @@ import type { Request, Response } from 'express';
 import { LocalAuthGuard } from './guards/local-auth.guard';
 import { AuthenticatedGuard } from './guards/authenticated.guard';
 import { UserEntity } from 'src/user/entities/user.entity';
+import { authenticate } from 'passport';
 
 // type SafeUser = Omit<UserEntity, 'password'>;
 // interface RequestWithUser extends Request {
@@ -49,4 +50,5 @@ export class AuthController {
       });
     });
   }
+
 }

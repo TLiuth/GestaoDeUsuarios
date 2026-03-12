@@ -11,4 +11,6 @@ export declare class UserService {
     validateAndCreateUser(createUserDto: CreateUserDto): Promise<string>;
     findByEmailWithPassword(email: string): Promise<UserEntity | null>;
     findById(id: number): Promise<UserEntity | null>;
+    updateUser(userId: number, data: Partial<UserEntity>): Promise<UserEntity | null>;
+    deleteUser(userId: number, targetId: number): Promise<string>;
 }
