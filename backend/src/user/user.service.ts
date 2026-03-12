@@ -66,6 +66,8 @@ export class UserService {
                 const entity = this.userRepository.create(user)
 
                 await this.userRepository.save(entity)
+
+                return "User created succesfully"
             }else{
                 throw new BadRequestException(`Password is required to create user`)
             }
@@ -80,6 +82,14 @@ export class UserService {
             throw new ServiceUnavailableException("Failed to create user")
 
         }
+    }
+
+    async findByEmailWithPassword(email: string){
+        return await this.userRepository.findOne({ where: { email: email }, select: ['id', 'name', 'email', 'password']})
+    }
+
+    async findById(id: number){
+        return await this.userRepository.findOne({where: { id: id}, select: ['id', 'name', 'email', 'password']})
     }
 
 
