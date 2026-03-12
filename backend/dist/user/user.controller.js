@@ -17,6 +17,8 @@ exports.UserController = void 0;
 const common_1 = require("@nestjs/common");
 const createUserDto_dto_1 = require("./dto/createUserDto.dto");
 const user_service_1 = require("./user.service");
+const authenticated_guard_1 = require("../auth/guards/authenticated.guard");
+const updateUserDto_dto_copy_1 = require("./dto/updateUserDto.dto copy");
 let UserController = UserController_1 = class UserController {
     userService;
     logger = new common_1.Logger(UserController_1.name);
@@ -28,6 +30,18 @@ let UserController = UserController_1 = class UserController {
     }
     async alive() {
         return "Alive";
+    }
+    async update(req, updateUserDto) {
+        const userId = req.user?.id;
+        if (!userId)
+            throw new common_1.UnauthorizedException('User not authenticated');
+        return this.userService.updateUser(userId, updateUserDto);
+    }
+    async deleteUser(req, targetId) {
+        const userId = req.user?.id;
+        if (!userId)
+            throw new common_1.UnauthorizedException("User not authenticated");
+        return this.userService.deleteUser(userId, targetId);
     }
 };
 exports.UserController = UserController;
@@ -44,6 +58,24 @@ __decorate([
     __metadata("design:paramtypes", []),
     __metadata("design:returntype", Promise)
 ], UserController.prototype, "alive", null);
+__decorate([
+    (0, common_1.UseGuards)(authenticated_guard_1.AuthenticatedGuard),
+    (0, common_1.Post)('update'),
+    __param(0, (0, common_1.Req)()),
+    __param(1, (0, common_1.Body)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object, updateUserDto_dto_copy_1.UpdateUserDto]),
+    __metadata("design:returntype", Promise)
+], UserController.prototype, "update", null);
+__decorate([
+    (0, common_1.UseGuards)(authenticated_guard_1.AuthenticatedGuard),
+    (0, common_1.Post)('delete'),
+    __param(0, (0, common_1.Req)()),
+    __param(1, (0, common_1.Body)("targetId", common_1.ParseIntPipe)),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object, Number]),
+    __metadata("design:returntype", Promise)
+], UserController.prototype, "deleteUser", null);
 exports.UserController = UserController = UserController_1 = __decorate([
     (0, common_1.Controller)('user'),
     __metadata("design:paramtypes", [user_service_1.UserService])

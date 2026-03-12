@@ -88,6 +88,42 @@ let UserService = UserService_1 = class UserService {
     async findById(id) {
         return await this.userRepository.findOne({ where: { id: id }, select: ['id', 'name', 'email', 'password'] });
     }
+    async updateUser(userId, data) {
+        const currentUser = await this.userRepository.findOne({ where: { id: userId } });
+        if (!currentUser) {
+            throw new common_1.BadRequestException("User not found");
+        }
+        const updateData = {};
+        if (data.name !== undefined) {
+            updateData.name = data.name;
+        }
+        if (data.email !== undefined) {
+            const existing = await this.userRepository.findOne({ where: { email: data.email } });
+            if (existing && existing.id !== userId) {
+                throw new common_1.ConflictException("This email is already registered");
+            }
+            updateData.email = data.email;
+        }
+        if (data.password !== undefined) {
+            updateData.password = await hashPasswordFunc(data.password);
+        }
+        if (Object.keys(updateData).length === 0) {
+            throw new common_1.BadRequestException("No fields provided for update");
+        }
+        await this.userRepository.update({ id: userId }, updateData);
+        return this.userRepository.findOne({
+            where: { id: userId },
+            select: ["id", "name", "email"]
+        });
+    }
+    async deleteUser(userId, targetId) {
+        if (userId === targetId) {
+            throw new common_1.BadRequestException("A user cannot delete itself via this path");
+        }
+        const targetUser = await this.userRepository.findOne({ where: { id: targetId }, select: ["id", "name", "email"] });
+        await this.userRepository.delete({ id: targetId });
+        return `User deleted from database:\n- Id: ${targetUser?.id}\n- Name: ${targetUser?.name}\n- Email: ${targetUser?.email}`;
+    }
 };
 exports.UserService = UserService;
 exports.UserService = UserService = UserService_1 = __decorate([
