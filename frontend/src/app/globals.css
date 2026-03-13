@@ -24,3 +24,16 @@ body {
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
 }
+
+@theme {
+  --color-notFound-Wine: #7a0000;
+  --color-notFound-Wine-light: #a73424;
+  --color-squareBackground-gray: #eaecf1;
+}
+
+@layer utilities {
+  .boxedLogin {
+    @apply w-full max-w-md sm:max-w-sm mx-auto my-auto;
+    @apply px-20 py-10 sm:py-8;
+  }
+}
