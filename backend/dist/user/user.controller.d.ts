@@ -14,5 +14,7 @@ export declare class UserController {
     alive(): Promise<string>;
     update(req: AuthRequest, updateUserDto: UpdateUserDto): Promise<import("./entities/user.entity").UserEntity | null>;
     deleteUser(req: AuthRequest, targetId: number): Promise<string>;
+    deleteItself(req: AuthRequest): Promise<string>;
+    getAllUsers(): Promise<import("./entities/user.entity").UserEntity[]>;
 }
 export {};

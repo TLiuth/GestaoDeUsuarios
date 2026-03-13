@@ -43,6 +43,15 @@ let UserController = UserController_1 = class UserController {
             throw new common_1.UnauthorizedException("User not authenticated");
         return this.userService.deleteUser(userId, targetId);
     }
+    async deleteItself(req) {
+        const userId = req.user?.id;
+        if (!userId)
+            throw new common_1.UnauthorizedException("User not authenticated");
+        return this.userService.deleteItself(userId);
+    }
+    async getAllUsers() {
+        return this.userService.getAllUsers();
+    }
 };
 exports.UserController = UserController;
 __decorate([
@@ -76,6 +85,21 @@ __decorate([
     __metadata("design:paramtypes", [Object, Number]),
     __metadata("design:returntype", Promise)
 ], UserController.prototype, "deleteUser", null);
+__decorate([
+    (0, common_1.UseGuards)(authenticated_guard_1.AuthenticatedGuard),
+    (0, common_1.Post)('deleteItself'),
+    __param(0, (0, common_1.Req)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object]),
+    __metadata("design:returntype", Promise)
+], UserController.prototype, "deleteItself", null);
+__decorate([
+    (0, common_1.UseGuards)(authenticated_guard_1.AuthenticatedGuard),
+    (0, common_1.Get)('listAll'),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", []),
+    __metadata("design:returntype", Promise)
+], UserController.prototype, "getAllUsers", null);
 exports.UserController = UserController = UserController_1 = __decorate([
     (0, common_1.Controller)('user'),
     __metadata("design:paramtypes", [user_service_1.UserService])

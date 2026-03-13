@@ -13,4 +13,6 @@ export declare class UserService {
     findById(id: number): Promise<UserEntity | null>;
     updateUser(userId: number, data: Partial<UserEntity>): Promise<UserEntity | null>;
     deleteUser(userId: number, targetId: number): Promise<string>;
+    deleteItself(userId: number): Promise<string>;
+    getAllUsers(): Promise<UserEntity[]>;
 }

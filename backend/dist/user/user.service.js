@@ -124,6 +124,18 @@ let UserService = UserService_1 = class UserService {
         await this.userRepository.delete({ id: targetId });
         return `User deleted from database:\n- Id: ${targetUser?.id}\n- Name: ${targetUser?.name}\n- Email: ${targetUser?.email}`;
     }
+    async deleteItself(userId) {
+        const user = await this.userRepository.findOne({ where: { id: userId }, select: ["id"] });
+        if (!user) {
+            throw new common_1.BadRequestException("User does not exist");
+        }
+        await this.userRepository.delete({ id: userId });
+        return "Account deleted";
+    }
+    async getAllUsers() {
+        const users = await this.userRepository.find({ select: ["id", "name", "email"] });
+        return users;
+    }
 };
 exports.UserService = UserService;
 exports.UserService = UserService = UserService_1 = __decorate([
