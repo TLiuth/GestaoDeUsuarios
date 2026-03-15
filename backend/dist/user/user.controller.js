@@ -95,7 +95,7 @@ __decorate([
 ], UserController.prototype, "deleteItself", null);
 __decorate([
     (0, common_1.UseGuards)(authenticated_guard_1.AuthenticatedGuard),
-    (0, common_1.Get)('listAll'),
+    (0, common_1.Get)('getAllUsers'),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", []),
     __metadata("design:returntype", Promise)

@@ -15,6 +15,9 @@ export default function Page() {
     password,
     changePassword,
     createAccount,
+    isSubmitting,
+    formError,
+    fieldErrors,
   } = useReadSignInForm();
 
   const activateDeactivate = () => {
@@ -32,6 +35,11 @@ export default function Page() {
         value={name}
         onChange={(e) => changeName(e.target.value)}
       ></input>
+      {fieldErrors.name && (
+        <p className="text-red-700 text-sm fixed bottom-40 right-20">
+          - {fieldErrors.name}.
+        </p>
+      )}
       <input
         className="w-full bg-gray-100 rounded px-3 py-2 text-gray-900"
         placeholder="email"
@@ -39,6 +47,11 @@ export default function Page() {
         value={email}
         onChange={(e) => changeEmail(e.target.value)}
       />
+      {fieldErrors.email && (
+        <p className="text-red-700 text-sm fixed bottom-35 right-20">
+          - {fieldErrors.email}.
+        </p>
+      )}
       <div className="flex justify-center gap-2">
         <input
           className="w-full bg-gray-100 rounded px-3 py-2 text-gray-900"
@@ -55,14 +68,21 @@ export default function Page() {
         >
           {showPassword ? "Hide" : "Show"}
         </button>
+        {fieldErrors.password && (
+          <p className="text-red-700 text-sm fixed bottom-30 right-20">
+            - {fieldErrors.password}.
+          </p>
+        )}
       </div>
       <button
         type="button"
+        disabled={isSubmitting}
         onClick={createAccount}
         className="rounded-md bg-blue-900 text-2xl text-gray-900 hover:bg-blue-500"
       >
-        Create Account
+        {isSubmitting ? "Creating..." : "Create Account"}
       </button>
+
       <hr className="text-gray-500"></hr>
       <div className="flex items-end gap-1">
         <h5 className="text-sm text-gray-900">Already have an account?</h5>

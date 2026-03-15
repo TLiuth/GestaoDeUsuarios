@@ -2,6 +2,8 @@ import Pagina from "@/src/components/template/Pagina";
 import { redirect } from "next/navigation";
 import { cookies } from "next/headers";
 import React from "react";
+import UserInfo from "@/src/components/template/UserInfo";
+import ShowUsers from "@/src/components/template/ShowUsers";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:3001";
 
@@ -18,10 +20,6 @@ export default async function page() {
       cache: "no-store",
     });
     ok = res.ok;
-    console.log(`>>> ${res}`);
-    console.log(
-      `### Differences: ${ok} | ${res.ok} >> ${Boolean(ok)} | ${Boolean(res.ok)}`,
-    );
   } catch (error) {
     console.log(`>>> Error on trying to ping for authentication: ${error}`);
     throw error;
@@ -34,7 +32,12 @@ export default async function page() {
 
   return (
     <Pagina>
-      <div className="text-5xl text-gray-900">Protected Dashboard</div>
+      <div className="flex flex-col items-center justify-center">
+        <div className="boxedDashboard">
+          <UserInfo></UserInfo>
+          <ShowUsers></ShowUsers>
+        </div>
+      </div>
     </Pagina>
   );
 }

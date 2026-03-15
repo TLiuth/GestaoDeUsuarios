@@ -36,4 +36,11 @@ body {
     @apply w-full max-w-md sm:max-w-sm mx-auto my-auto;
     @apply px-20 py-10 sm:py-8;
   }
+
+  .boxedDashboard {
+    @apply w-full my-auto;
+    @apply px-4 py-6;
+    @apply sm:px-8 sm:py-8 sm:max-w-2xl;
+    @apply lg:max-w-6xl lg:px-12 lg:py-10;
+  }
 }

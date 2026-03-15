@@ -1,11 +1,24 @@
-import { useSearchParams } from "next/navigation";
+import { contains } from "class-validator";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 
+type FieldErrors = {
+  name?: string;
+  email?: string;
+  password?: string;
+};
+
 export default function useReadSignInForm() {
+  // Data handling
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+
+  // Error handling
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [formError, setFormError] = useState("");
+  const [fieldErrors, setFieldErrors] = useState<FieldErrors>({});
+
   const router = useRouter();
 
   function changeName(name: string) {
@@ -21,6 +34,9 @@ export default function useReadSignInForm() {
   }
 
   async function createAccount() {
+    setIsSubmitting(true);
+    setFormError("");
+    setFieldErrors({});
     try {
       const res = await fetch(
         `${process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:3001"}/user/create`,
@@ -32,15 +48,37 @@ export default function useReadSignInForm() {
         },
       );
 
+      const data = await res.json().catch(() => null);
+
       if (!res.ok) {
-        console.log(">>> Invalid credentials");
-        console.log(`>>> Status: ${res.status}`);
+        if (res.status == 400 && Array.isArray(data?.message)) {
+          const nextErrors: FieldErrors = {};
+
+          for (const msg of data.message as string[]) {
+            const lower = msg.toLowerCase();
+
+            if (lower.includes("name")) nextErrors.name = msg;
+            else if (lower.includes("email"))
+              nextErrors.email = "Not a valid email";
+            else if (lower.includes("password")) nextErrors.password = msg;
+            else setFormError(msg);
+          }
+
+          setFieldErrors(nextErrors);
+        } else if (res.status === 409) {
+          setFormError(data?.message ?? "Email already registered");
+        } else {
+          setFormError("Unable to create account right now. Try again later");
+        }
+
         return;
       }
 
       router.push("/dashboard");
     } catch (error) {
       console.log(`>>> Sign In account request failed: ${error}`);
+    } finally {
+      setIsSubmitting(false);
     }
   }
 
@@ -52,5 +90,8 @@ export default function useReadSignInForm() {
     password,
     changePassword,
     createAccount,
+    isSubmitting,
+    formError,
+    fieldErrors,
   };
 }

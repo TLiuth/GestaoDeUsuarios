@@ -49,7 +49,7 @@ export class UserController {
     }
 
     @UseGuards(AuthenticatedGuard)
-    @Get('listAll')
+    @Get('getAllUsers')
     async getAllUsers(){
         return this.userService.getAllUsers()
     }
