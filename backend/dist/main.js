@@ -19,7 +19,11 @@ async function bootstrap() {
     }));
     app.use(passport_1.default.initialize());
     app.use(passport_1.default.session());
-    await app.listen(process.env.PORT ?? 3000);
+    app.enableCors({
+        origin: "http://localhost:3000",
+        credentials: true
+    });
+    await app.listen(process.env.PORT ?? 3001);
 }
 bootstrap();
 //# sourceMappingURL=main.js.map

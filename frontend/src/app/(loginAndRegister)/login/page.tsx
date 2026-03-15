@@ -2,6 +2,11 @@
 
 import Link from "next/link";
 import React, { useState } from "react";
+import useReadLoginForm from "../../hooks/useReadLoginForm";
+
+export async function loginButton() {
+  console.log(">>> Fazendo login");
+}
 
 export default function Page() {
   const [showPassword, setShowPassword] = useState(false);
@@ -10,21 +15,27 @@ export default function Page() {
     setShowPassword((prev) => !prev);
   };
 
+  // info for login
+  const { email, changeEmail, password, changePassword, submitLogin } =
+    useReadLoginForm();
+
   return (
     <div className="flex flex-col gap-3">
       <h1 className="text-gray-900 text-4xl">Log in</h1>
       <hr className="text-gray-500"></hr>
       <input
-        className="w-full bg-gray-100 rounded px-3 py-2"
+        className="w-full bg-gray-100 rounded px-3 py-2 text-gray-900"
         placeholder="email"
         name="emailInput"
+        onChange={(e) => changeEmail(e.target.value)}
       />
       <div className="flex justify-center gap-2">
         <input
-          className="w-full bg-gray-100 rounded px-3 py-2"
+          className="w-full bg-gray-100 rounded px-3 py-2 text-gray-900"
           placeholder="password"
           type={showPassword ? "text" : "password"}
           name="passwordInput"
+          onChange={(e) => changePassword(e.target.value)}
         />
         <button
           type="button"
@@ -34,6 +45,13 @@ export default function Page() {
           {showPassword ? "Hide" : "Show"}
         </button>
       </div>
+      <button
+        type="button"
+        onClick={submitLogin}
+        className="rounded-md bg-blue-900 text-2xl text-gray-900 hover:bg-blue-500"
+      >
+        Log In
+      </button>
       <hr className="text-gray-500"></hr>
       <div className="flex items-end gap-1">
         <h5 className="text-sm text-gray-900">Doesn't have an account?</h5>
