@@ -3,10 +3,20 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 
+type FieldErrors = {
+  email?: string;
+  password?: string;
+};
+
 export default function useReadLoginForm() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const router = useRouter();
+
+  // Error handling
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [formError, setFormError] = useState("");
+  const [fieldErrors, setFieldErrors] = useState<FieldErrors>({});
 
   function changeEmail(email: string) {
     setEmail(email);
@@ -17,6 +27,9 @@ export default function useReadLoginForm() {
   }
 
   async function submitLogin() {
+    setIsSubmitting(true);
+    setFormError("");
+    setFieldErrors({});
     try {
       const res = await fetch(
         `${process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:3001"}/auth/login`,
@@ -28,17 +41,45 @@ export default function useReadLoginForm() {
         },
       );
 
+      const data = await res.json().catch(() => null);
+
       if (!res.ok) {
-        console.log(">>> Invalid credentials");
-        console.log(`>>> Status: ${res.status}`);
-        return;
+        if (res.status === 400 && Array.isArray(data?.message)) {
+          const NextErrors: FieldErrors = {};
+
+          for (const msg of data.msg as string[]) {
+            const lower = msg.toLowerCase();
+            if (msg.includes("email")) NextErrors.email = msg;
+            else if (msg.includes("email")) NextErrors.email = msg;
+            else setFormError(msg);
+          }
+
+          setFieldErrors(NextErrors);
+
+          return;
+        } else {
+          setFormError("Email or password incorrect.");
+
+          return;
+        }
       }
 
       router.push("/dashboard");
     } catch (error) {
-      console.log(`>>> Login request failed: ${error}`);
+      setFormError(`Error when trying to log in: ${error}`);
+    } finally {
+      // setIsSubmitting(false);
     }
   }
 
-  return { email, changeEmail, password, changePassword, submitLogin };
+  return {
+    email,
+    changeEmail,
+    password,
+    changePassword,
+    submitLogin,
+    isSubmitting,
+    formError,
+    fieldErrors,
+  };
 }

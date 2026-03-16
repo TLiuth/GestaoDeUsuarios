@@ -17,8 +17,6 @@ export default function AddUser({ onCreated }: AddUserProps) {
     formError,
     fieldErrors,
   } = useAddUser({ onSuccess: onCreated });
-  
-  
 
   return (
     <div className="items-center px-10 py-2 flex gap-8">
@@ -61,7 +59,7 @@ export default function AddUser({ onCreated }: AddUserProps) {
           )}
         </div>
       </div>
-      <div>
+      <div className="relative">
         <button
           type="button"
           className="bg-yellow-600 rounded-2xl p-2 active:bg-yellow-300"
@@ -70,7 +68,11 @@ export default function AddUser({ onCreated }: AddUserProps) {
         >
           {isSubmitting ? "Adding..." : "Add User"}
         </button>
-        {formError && <p className="mt-2 text-sm text-red-700">{formError}</p>}
+        {formError && (
+          <p className="absolute left-1 top-full mt-1 max-w-75 whitespace-normal wrap-break-word text-sm leading-tight text-red-700">
+            {formError}
+          </p>
+        )}
       </div>
       <hr className="text-gra"></hr>
     </div>

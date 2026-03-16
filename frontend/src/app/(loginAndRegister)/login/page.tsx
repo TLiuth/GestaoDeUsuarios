@@ -16,8 +16,16 @@ export default function Page() {
   };
 
   // info for login
-  const { email, changeEmail, password, changePassword, submitLogin } =
-    useReadLoginForm();
+  const {
+    email,
+    changeEmail,
+    password,
+    changePassword,
+    submitLogin,
+    isSubmitting,
+    formError,
+    fieldErrors, // have no use right now, but they are registered here if needed
+  } = useReadLoginForm();
 
   return (
     <div className="flex flex-col gap-3">
@@ -61,6 +69,9 @@ export default function Page() {
         >
           Sign In
         </Link>
+      </div>
+      <div className="text-gray-900 h-8 text-sm">
+        {isSubmitting ? formError : ""}
       </div>
     </div>
   );
