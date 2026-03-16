@@ -12,7 +12,7 @@ export default function Error404() {
 
         <Link
           className="bg-notFound-Wine border-2 border-gray-200 text-gray-200 p-3 rounded-2xl hover:bg-notFound-Wine-light hover:border-2 hover:border-notFound-Wine"
-          href={"/"}
+          href={"/dashboard"}
         >
           Return to homepage
         </Link>

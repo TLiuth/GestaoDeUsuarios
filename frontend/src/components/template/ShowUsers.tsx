@@ -1,53 +1,43 @@
 "use client";
 
 import useShowUsers, { SortKey } from "@/src/app/hooks/useShowUsers";
-import getUsersList, { User } from "@/src/services/getUsersList";
-import React, { useEffect, useState } from "react";
+import getUsersList from "@/src/services/getUsersList";
+import React, { useEffect } from "react";
+import AddUser from "./AddUser";
 
 export default function ShowUsers() {
-  const { usersList, setUsers, error, setError, sortKey, sortUsers, addUser } =
+  const { usersList, setUsers, error, setError, sortKey, sortUsers } =
     useShowUsers();
 
+  async function fetchUsers() {
+    try {
+      const users = await getUsersList();
+      setUsers(users);
+      setError("");
+    } catch {
+      setError("Could not load users.");
+    }
+  }
+
   useEffect(() => {
-    let active = true;
-
-    (async () => {
-      try {
-        const users = await getUsersList();
-        if (active) setUsers(users);
-      } catch (err) {
-        if (active) setError("Could not load users.");
-      }
-    })();
-
-    return () => {
-      active = false;
-    };
+    fetchUsers();
   }, []);
 
   return (
     <div className="bg-squareBackground-gray rounded-2xl flex flex-col justify-between inset-shadow-2xs">
-      <div className="bg-blue-900 rounded-t-2xl grid grid-cols-2 justify-between gap-4 items-center">
-        <div className="flex gap-4 align-center px-10 py-5">
+      <div className="bg-blue-900 rounded-t-2xl flex flex-col py-5 justify-between gap-2">
+        <AddUser onCreated={fetchUsers}></AddUser>
+        <div className="flex gap-4 align-center px-10 py-2">
           <h3 className="text-gray-900 text-2xl">Sort By: </h3>
           <select
             value={sortKey}
             onChange={(e) => sortUsers(e.target.value as SortKey)}
-            className="text-white text-2xl"
+            className="text-white text-lg"
           >
             <option value="id">Id</option>
             <option value="name">Name</option>
             <option value="email">Email</option>
           </select>
-        </div>
-        <div className="items-end">
-          <button
-            onClick={addUser}
-            type="button"
-            className="bg-yellow-600 rounded-2xl p-2 active:bg-yellow-300"
-          >
-            Add User
-          </button>
         </div>
       </div>
       <div className="flex flex-col gap-2 px-5">
