@@ -27,7 +27,7 @@ export default function ShowUsers({ refreshKey }: ShowUserProps) {
     <div className="bg-squareBackground-gray rounded-2xl flex flex-col justify-between inset-shadow-2xs">
       <div className="bg-blue-900 rounded-t-2xl flex flex-col py-5 justify-between gap-2">
         <AddUser onCreated={fetchUsers}></AddUser>
-        <div className="items-center flex flex-col">
+        <div className="items-center flex flex-col pt-12">
           <hr className="text-black w-11/12"></hr>
         </div>
         <div className="flex gap-4 align-center px-10 py-2">

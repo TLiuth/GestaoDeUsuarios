@@ -38,7 +38,7 @@ __decorate([
         minSymbols: 1,
     }, {
         message: `Password is too weak. It must contain at least ${minLength} characters, one uppercase letter, one lowercase letter,
-        one number, and one symbol`
+        one number, and one symbol.`
     }),
     __metadata("design:type", String)
 ], CreateUserDto.prototype, "password", void 0);

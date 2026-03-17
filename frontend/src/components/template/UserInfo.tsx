@@ -50,7 +50,7 @@ export default function UserInfo({
             onClick={() => setEditing(!isEditing)}
             className="bg-yellow-500 rounded-sm active:bg-yellow-800 p-1 text-sm"
           >
-            Toggle Edition
+            Toggle Editing
           </button>
         </div>
         <div className="flex gap-3">

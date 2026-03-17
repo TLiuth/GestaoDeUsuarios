@@ -2,7 +2,7 @@ import "dotenv/config";
 import { DataSource } from "typeorm";
 import { UserEntity } from "../user/entities/user.entity";
 
-export const AppDataSource = new DataSource({
+export default new DataSource({
   type: "postgres",
   host: process.env.DATABASE_HOST,
   port: parseInt(process.env.DATABASE_PORT ?? "5432", 10),
@@ -14,5 +14,3 @@ export const AppDataSource = new DataSource({
   synchronize: false,
   logging: process.env.TYPEORM_LOGGING === "true",
 });
-
-export default AppDataSource;

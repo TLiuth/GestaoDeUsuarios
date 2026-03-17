@@ -36,7 +36,7 @@ export default function useEditUser(onUserUpdated?: () => void) {
   const [name, setName] = useState<string>("");
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
-  let id = 0;
+  const [id, setId] = useState(0);
 
   async function setUserInfo() {
     try {
@@ -50,7 +50,7 @@ export default function useEditUser(onUserUpdated?: () => void) {
       changeName(user.name);
       changeEmail(user.email);
 
-      id = user.id;
+      setId(user.id);
     } catch (error) {
       setFetchError(error as string);
       throw new Error(`Failure to load user information`);
@@ -123,9 +123,12 @@ export default function useEditUser(onUserUpdated?: () => void) {
           for (const msg of data.message as string[]) {
             const lowerMsg = msg.toLowerCase();
 
-            if (lowerMsg.includes("name")) nextErrors.name = msg;
-            else if (lowerMsg.includes("email")) nextErrors.email = msg;
-            else if (lowerMsg.includes("password")) nextErrors.password = msg;
+            if (lowerMsg.includes("name"))
+              nextErrors.name = msg.charAt(0).toUpperCase() + msg.slice(1);
+            else if (lowerMsg.includes("email"))
+              nextErrors.email = "Not a valid email";
+            else if (lowerMsg.includes("password"))
+              nextErrors.password = msg.charAt(0).toUpperCase() + msg.slice(1);
             else setFormError(msg);
           }
 

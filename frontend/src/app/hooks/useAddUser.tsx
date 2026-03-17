@@ -59,11 +59,13 @@ export default function useAddUser({ onSuccess }: UseAddUserOptions = {}) {
           for (const msg of data.message as string[]) {
             const lower = msg.toLowerCase();
 
-            if (lower.includes("name")) nextErrors.name = msg;
+            if (lower.includes("name"))
+              nextErrors.name = msg.charAt(0).toUpperCase() + msg.slice(1);
             else if (lower.includes("email"))
               nextErrors.email = "Not a valid email";
-            else if (lower.includes("password")) nextErrors.password = msg;
-            else setFormError(msg);
+            else if (lower.includes("password"))
+              nextErrors.password = msg.charAt(0).toUpperCase() + msg.slice(1);
+            else setFormError(msg.charAt(0).toUpperCase() + msg.slice(1));
           }
 
           setFieldErrors(nextErrors);

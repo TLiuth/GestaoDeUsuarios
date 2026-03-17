@@ -1,8 +1,10 @@
 "use client";
 
 import Link from "next/link";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import useReadLoginForm from "../../hooks/useReadLoginForm";
+import useEditUser from "../../hooks/useEditUser";
+import { useFormState } from "react-dom";
 
 export async function loginButton() {
   console.log(">>> Fazendo login");
@@ -26,6 +28,14 @@ export default function Page() {
     formError,
     fieldErrors, // have no use right now, but they are registered here if needed
   } = useReadLoginForm();
+
+  useEffect(() => {
+    window.addEventListener("keydown", (e) => {
+      if (e.key === "Enter") {
+        submitLogin();
+      }
+    });
+  });
 
   return (
     <div className="flex flex-col gap-3">

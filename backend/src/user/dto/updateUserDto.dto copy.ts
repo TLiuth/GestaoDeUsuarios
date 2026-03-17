@@ -20,7 +20,7 @@ export class UpdateUserDto {
         minSymbols: 1,
     }, {
         message: `Password is too weak. It must contain at least ${minLength} characters, one uppercase letter, one lowercase letter,
-        one number, and one symbol`
+        one number, and one symbol.`
     })
     password?: string;
 

@@ -49,9 +49,11 @@ export default function useReadLoginForm() {
 
           for (const msg of data.msg as string[]) {
             const lower = msg.toLowerCase();
-            if (msg.includes("email")) NextErrors.email = msg;
-            else if (msg.includes("email")) NextErrors.email = msg;
-            else setFormError(msg);
+            if (msg.includes("email"))
+              NextErrors.email = msg.charAt(0).toUpperCase() + msg.slice(1);
+            else if (msg.includes("email"))
+              NextErrors.email = msg.charAt(0).toUpperCase() + msg.slice(1);
+            else setFormError(msg.charAt(0).toUpperCase() + msg.slice(1));
           }
 
           setFieldErrors(NextErrors);

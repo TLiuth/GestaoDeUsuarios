@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import useReadSignInForm from "../../hooks/useReadSignInForm";
 
 export default function Page() {
@@ -23,6 +23,14 @@ export default function Page() {
   const activateDeactivate = () => {
     setShowPassword((prev) => !prev);
   };
+
+  useEffect(() => {
+    window.addEventListener("keydown", (e) => {
+      if (e.key === "Enter") {
+        createAccount();
+      }
+    });
+  });
 
   return (
     <div className="flex flex-col gap-3">
