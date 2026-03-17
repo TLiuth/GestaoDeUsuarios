@@ -1,10 +1,9 @@
-import { BadRequestException, ConflictException, Injectable, Logger, Post, ServiceUnavailableException, UseGuards } from '@nestjs/common';
+import { BadRequestException, ConflictException, Injectable, Logger, ServiceUnavailableException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { UserEntity } from './entities/user.entity';
 import { Repository } from 'typeorm';
-import bcrypt from "bcrypt"
+import bcrypt from 'bcryptjs';
 import { CreateUserDto } from './dto/createUserDto.dto';
-import { useSearchParams } from 'next/navigation';
 
 
 type UserType = {

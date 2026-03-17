@@ -11,6 +11,10 @@ const passport_1 = __importDefault(require("passport"));
 async function bootstrap() {
     const app = await core_1.NestFactory.create(app_module_1.AppModule);
     app.useGlobalPipes(new common_1.ValidationPipe());
+    const frontendOrigins = (process.env.FRONTEND_ORIGIN ?? 'http://localhost:3000')
+        .split(',')
+        .map((origin) => origin.trim())
+        .filter(Boolean);
     app.use((0, express_session_1.default)({
         secret: process.env.SESSION_SECRET ?? 'dev-secret',
         resave: false,
@@ -20,8 +24,8 @@ async function bootstrap() {
     app.use(passport_1.default.initialize());
     app.use(passport_1.default.session());
     app.enableCors({
-        origin: "http://localhost:3000",
-        credentials: true
+        origin: frontendOrigins,
+        credentials: true,
     });
     await app.listen(process.env.PORT ?? 3001);
 }

@@ -17,7 +17,14 @@ export class SessionSerializer extends PassportSerializer {
         done: (err: Error | null, user?: any) => void,
     ){
         const user = await this.userService.findById(id);
-        done(null, user ?? null);
+
+        if (!user) {
+            done(null, null);
+            return;
+        }
+
+        const { password, ...safeUser } = user;
+        done(null, safeUser);
     }
 }
 

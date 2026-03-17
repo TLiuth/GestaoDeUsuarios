@@ -23,11 +23,11 @@ const common_1 = require("@nestjs/common");
 const typeorm_1 = require("@nestjs/typeorm");
 const user_entity_1 = require("./entities/user.entity");
 const typeorm_2 = require("typeorm");
-const bcrypt_1 = __importDefault(require("bcrypt"));
+const bcryptjs_1 = __importDefault(require("bcryptjs"));
 async function hashPasswordFunc(password) {
     try {
-        const salt = await bcrypt_1.default.genSalt();
-        return await bcrypt_1.default.hash(password, salt);
+        const salt = await bcryptjs_1.default.genSalt();
+        return await bcryptjs_1.default.hash(password, salt);
     }
     catch (error) {
         throw error;
@@ -35,7 +35,7 @@ async function hashPasswordFunc(password) {
 }
 async function comparePassword(userPassword, passwordHash) {
     try {
-        const result = await bcrypt_1.default.compare(userPassword, passwordHash);
+        const result = await bcryptjs_1.default.compare(userPassword, passwordHash);
         return result;
     }
     catch (error) {
