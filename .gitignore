@@ -14,3 +14,4 @@ frontend/dist/
 project.excalidraw
 
 AUTHENTICATION_FLOW.md
+/node_modules/
