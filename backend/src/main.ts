@@ -7,10 +7,12 @@ import passport from 'passport';
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   app.useGlobalPipes(new ValidationPipe());
-  const frontendOrigins = (process.env.FRONTEND_ORIGIN ?? 'http://localhost:3000')
+
+  const configuredOrigins = (process.env.FRONTEND_ORIGIN ?? 'http://localhost:3000,http://127.0.0.1:3000')
     .split(',')
     .map((origin) => origin.trim())
-    .filter(Boolean);
+    .filter(Boolean)
+    .map((origin) => origin.replace(/\/$/, ''));
 
   app.use(
     session({
@@ -25,7 +27,21 @@ async function bootstrap() {
   app.use(passport.session());
 
   app.enableCors({
-    origin: frontendOrigins,
+    origin: (origin, callback) => {
+      // Allow non-browser clients (curl, server-to-server) with no Origin header.
+      if (!origin) {
+        callback(null, true);
+        return;
+      }
+
+      const normalizedOrigin = origin.replace(/\/$/, '');
+      if (configuredOrigins.includes(normalizedOrigin)) {
+        callback(null, true);
+        return;
+      }
+
+      callback(new Error(`Origin not allowed by CORS: ${origin}`), false);
+    },
     credentials: true,
   });
 

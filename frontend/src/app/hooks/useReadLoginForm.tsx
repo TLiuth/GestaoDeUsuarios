@@ -3,7 +3,9 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:3001";
+const API_URL = (
+  process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:3001"
+).replace(/\/$/, "");
 
 type FieldErrors = {
   email?: string;
@@ -32,6 +34,7 @@ export default function useReadLoginForm() {
     setIsSubmitting(true);
     setFormError("");
     setFieldErrors({});
+
     try {
       const res = await fetch(`${API_URL}/auth/login`, {
         method: "POST",
@@ -44,18 +47,18 @@ export default function useReadLoginForm() {
 
       if (!res.ok) {
         if (res.status === 400 && Array.isArray(data?.message)) {
-          const NextErrors: FieldErrors = {};
+          const nextErrors: FieldErrors = {};
 
-          for (const msg of data.msg as string[]) {
+          for (const msg of data.message as string[]) {
             const lower = msg.toLowerCase();
-            if (msg.includes("email"))
-              NextErrors.email = msg.charAt(0).toUpperCase() + msg.slice(1);
-            else if (msg.includes("email"))
-              NextErrors.email = msg.charAt(0).toUpperCase() + msg.slice(1);
+            if (lower.includes("email"))
+              nextErrors.email = msg.charAt(0).toUpperCase() + msg.slice(1);
+            else if (lower.includes("password"))
+              nextErrors.password = msg.charAt(0).toUpperCase() + msg.slice(1);
             else setFormError(msg.charAt(0).toUpperCase() + msg.slice(1));
           }
 
-          setFieldErrors(NextErrors);
+          setFieldErrors(nextErrors);
 
           return;
         } else {
@@ -66,10 +69,13 @@ export default function useReadLoginForm() {
       }
 
       router.push("/dashboard");
-    } catch (error) {
-      setFormError(`Error when trying to log in: ${error}`);
+    } catch (error: unknown) {
+      const message = error instanceof Error ? error.message : String(error);
+      setFormError(
+        `Unable to reach the server. Check if backend is running and NEXT_PUBLIC_API_URL is correct. (${message})`,
+      );
     } finally {
-      // setIsSubmitting(false);
+      setIsSubmitting(false);
     }
   }
 

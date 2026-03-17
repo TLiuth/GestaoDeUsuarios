@@ -3,8 +3,6 @@
 import Link from "next/link";
 import React, { useEffect, useState } from "react";
 import useReadLoginForm from "../../hooks/useReadLoginForm";
-import useEditUser from "../../hooks/useEditUser";
-import { useFormState } from "react-dom";
 
 export async function loginButton() {
   console.log(">>> Fazendo login");
@@ -18,24 +16,19 @@ export default function Page() {
   };
 
   // info for login
-  const {
-    email,
-    changeEmail,
-    password,
-    changePassword,
-    submitLogin,
-    isSubmitting,
-    formError,
-    fieldErrors, // have no use right now, but they are registered here if needed
-  } = useReadLoginForm();
+  const { changeEmail, changePassword, submitLogin, isSubmitting, formError } =
+    useReadLoginForm();
 
   useEffect(() => {
-    window.addEventListener("keydown", (e) => {
+    const onKeyDown = (e: KeyboardEvent) => {
       if (e.key === "Enter") {
         submitLogin();
       }
-    });
-  });
+    };
+
+    window.addEventListener("keydown", onKeyDown);
+    return () => window.removeEventListener("keydown", onKeyDown);
+  }, [submitLogin]);
 
   return (
     <div className="flex flex-col gap-3">
@@ -66,9 +59,10 @@ export default function Page() {
       <button
         type="button"
         onClick={submitLogin}
+        disabled={isSubmitting}
         className="rounded-md bg-blue-900 text-2xl text-gray-900 hover:bg-blue-500"
       >
-        Log In
+        {isSubmitting ? "Logging in..." : "Log In"}
       </button>
       <hr className="text-gray-500"></hr>
       <div className="flex items-end gap-1">
@@ -80,9 +74,7 @@ export default function Page() {
           Sign In
         </Link>
       </div>
-      <div className="text-gray-900 h-8 text-sm">
-        {isSubmitting ? formError : ""}
-      </div>
+      <div className="text-gray-900 h-8 text-sm">{formError}</div>
     </div>
   );
 }
