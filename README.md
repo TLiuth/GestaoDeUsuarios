@@ -69,3 +69,35 @@ To also remove the database volume:
 ```bash
 docker compose down -v
 ```
+
+## Backend Structure
+
+I followed NestJS usual patterns as best as I could, implementing:
+
+### User component
+
+- User entity: to model the user objects that TypeORM would use to create the db
+- UserController: to deal with routes
+- UserServices: user related services
+- UserModule: to manage NodeJS modules structure (imports, controllers, providers, exports)
+- DTOs: to model Data Transfer Objects, that allow to defined more rigid rules for objects transference over the routes and to validate the data.
+
+### Auth component
+
+- All the files to deal with sessions, authentication and authorization
+
+## Frontend Structure
+
+### Pages and components
+
+- Reusable templates that can go inside other structures are defined on components/templates
+- The folders under "/app" define the accessing routes for the pages
+
+### Hooks
+
+- Custom hooks to deal with data input, handling and submission
+- Custom hooks to receive the response from the backend and parse it as needed (success responde, error fields, ...)
+
+### Services
+
+- Complementary utility services that can be reused.
