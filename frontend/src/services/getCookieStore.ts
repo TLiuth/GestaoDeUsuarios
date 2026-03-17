@@ -1,11 +1,14 @@
 import { cookies } from "next/headers";
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:3001";
+const API_URL =
+  process.env.INTERNAL_API_URL ??
+  process.env.NEXT_PUBLIC_API_URL ??
+  "http://localhost:3001";
 
-export default async function getCookiesStore(){
-    const cookieStore = await cookies();
+export default async function getCookiesStore() {
+  const cookieStore = await cookies();
 
-    const res = await fetch(`${API_URL}/auth/ping`, {
+  const res = await fetch(`${API_URL}/auth/ping`, {
     method: "GET",
     headers: {
       cookie: cookieStore.toString(),
@@ -13,6 +16,5 @@ export default async function getCookiesStore(){
     cache: "no-store",
   });
 
-  return [cookieStore, res]
-
+  return [cookieStore, res];
 }

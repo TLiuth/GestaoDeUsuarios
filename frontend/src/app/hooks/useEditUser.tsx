@@ -1,9 +1,9 @@
 "use client";
 
 import getUserInfo from "@/src/services/getUserInfo";
-import { Form } from "lucide-react";
-import { useSearchParams } from "next/navigation";
-import React, { useState } from "react";
+import { useState } from "react";
+
+const API_URL = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:3001";
 
 export type User = {
   id: number;
@@ -41,8 +41,6 @@ export default function useEditUser(onUserUpdated?: () => void) {
   async function setUserInfo() {
     try {
       const user: User = await getUserInfo();
-
-      user;
 
       setOriginalName(user.name);
       setOriginalEmail(user.email);
@@ -104,15 +102,12 @@ export default function useEditUser(onUserUpdated?: () => void) {
     }
 
     try {
-      const res = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:3001"}/user/update`,
-        {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          credentials: "include",
-          body: JSON.stringify(payload),
-        },
-      );
+      const res = await fetch(`${API_URL}/user/update`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        credentials: "include",
+        body: JSON.stringify(payload),
+      });
 
       const data = await res.json().catch(() => null);
 

@@ -2,7 +2,6 @@
 
 import useEditUser from "@/src/app/hooks/useEditUser";
 import React, { useEffect } from "react";
-import { PencilOff } from "lucide-react";
 
 export default function UserInfo({
   onUserUpdated,
@@ -42,7 +41,7 @@ export default function UserInfo({
           <h3 className="text-md font-bold px-3 text-gray-900">Name: </h3>
           <input
             className="read-only:bg-gray-500 bg-gray-300 rounded-sm text-gray-900 px-2"
-            defaultValue={name}
+            value={name}
             readOnly={!isEditing}
             onChange={(e) => changeName(e.target.value)}
           ></input>
@@ -58,7 +57,7 @@ export default function UserInfo({
           <input
             className="read-only:bg-gray-500 bg-gray-300 rounded-sm text-gray-900 px-2"
             readOnly={!isEditing}
-            defaultValue={email}
+            value={email}
             onChange={(e) => changeEmail(e.target.value)}
           ></input>
           <button
@@ -72,7 +71,7 @@ export default function UserInfo({
           <h3 className="text-md font-bold px-3 text-gray-900"> Password:</h3>
           <input
             className="read-only:bg-gray-500 bg-gray-300 rounded-sm text-gray-900 px-2 w-44"
-            defaultValue=""
+            value={password}
             placeholder="New password"
             readOnly={!isEditing}
             onChange={(e) => changePassword(e.target.value)}

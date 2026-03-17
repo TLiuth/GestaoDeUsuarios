@@ -1,6 +1,8 @@
 "use client";
 
-import React, { useState } from "react";
+import { useState } from "react";
+
+const API_URL = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:3001";
 
 type FieldErrors = {
   name?: string;
@@ -40,15 +42,12 @@ export default function useAddUser({ onSuccess }: UseAddUserOptions = {}) {
     setFormError("");
     setFieldErrors({});
     try {
-      const res = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:3001"}/user/create`,
-        {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          credentials: "include",
-          body: JSON.stringify({ name, email, password }),
-        },
-      );
+      const res = await fetch(`${API_URL}/user/create`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        credentials: "include",
+        body: JSON.stringify({ name, email, password }),
+      });
 
       const data = await res.json().catch(() => null);
 

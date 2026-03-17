@@ -1,6 +1,7 @@
-import { contains } from "class-validator";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+
+const API_URL = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:3001";
 
 type FieldErrors = {
   name?: string;
@@ -38,15 +39,12 @@ export default function useReadSignInForm() {
     setFormError("");
     setFieldErrors({});
     try {
-      const res = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:3001"}/user/create`,
-        {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          credentials: "include",
-          body: JSON.stringify({ name, email, password }),
-        },
-      );
+      const res = await fetch(`${API_URL}/user/create`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        credentials: "include",
+        body: JSON.stringify({ name, email, password }),
+      });
 
       const data = await res.json().catch(() => null);
 
@@ -77,15 +75,12 @@ export default function useReadSignInForm() {
       }
 
       // after succesfull account creation, authenticates
-      await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:3001"}/auth/login`,
-        {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          credentials: "include",
-          body: JSON.stringify({ email, password }),
-        },
-      );
+      await fetch(`${API_URL}/auth/login`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        credentials: "include",
+        body: JSON.stringify({ email, password }),
+      });
 
       router.push("/dashboard");
     } catch (error) {
