@@ -136,6 +136,9 @@ let UserService = UserService_1 = class UserService {
         const users = await this.userRepository.find({ select: ["id", "name", "email"] });
         return users;
     }
+    async getCurrentUser(id) {
+        return await this.userRepository.findOne({ where: { id: id }, select: ['id', 'name', 'email'] });
+    }
 };
 exports.UserService = UserService;
 exports.UserService = UserService = UserService_1 = __decorate([

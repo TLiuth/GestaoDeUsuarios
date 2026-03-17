@@ -1,32 +1,35 @@
 "use client";
 
 import useShowUsers, { SortKey } from "@/src/app/hooks/useShowUsers";
-import getUsersList from "@/src/services/getUsersList";
 import React, { useEffect } from "react";
 import AddUser from "./AddUser";
 
-export default function ShowUsers() {
-  const { usersList, setUsers, error, setError, sortKey, sortUsers } =
-    useShowUsers();
+type ShowUserProps = {
+  refreshKey: number;
+};
 
-  async function fetchUsers() {
-    try {
-      const users = await getUsersList();
-      setUsers(users);
-      setError("");
-    } catch {
-      setError("Could not load users.");
-    }
-  }
+export default function ShowUsers({ refreshKey }: ShowUserProps) {
+  const {
+    usersList,
+    setUsers,
+    error,
+    setError,
+    sortKey,
+    sortUsers,
+    fetchUsers,
+  } = useShowUsers();
 
   useEffect(() => {
     fetchUsers();
-  }, []);
+  }, [refreshKey]);
 
   return (
     <div className="bg-squareBackground-gray rounded-2xl flex flex-col justify-between inset-shadow-2xs">
       <div className="bg-blue-900 rounded-t-2xl flex flex-col py-5 justify-between gap-2">
         <AddUser onCreated={fetchUsers}></AddUser>
+        <div className="items-center flex flex-col">
+          <hr className="text-black w-11/12"></hr>
+        </div>
         <div className="flex gap-4 align-center px-10 py-2">
           <h3 className="text-gray-900 text-2xl">Sort By: </h3>
           <select

@@ -16,5 +16,6 @@ export declare class UserController {
     deleteUser(req: AuthRequest, targetId: number): Promise<string>;
     deleteItself(req: AuthRequest): Promise<string>;
     getAllUsers(): Promise<import("./entities/user.entity").UserEntity[]>;
+    getCurrentUser(req: AuthRequest): Promise<import("./entities/user.entity").UserEntity | null>;
 }
 export {};

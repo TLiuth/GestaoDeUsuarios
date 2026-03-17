@@ -15,4 +15,5 @@ export declare class UserService {
     deleteUser(userId: number, targetId: number): Promise<string>;
     deleteItself(userId: number): Promise<string>;
     getAllUsers(): Promise<UserEntity[]>;
+    getCurrentUser(id: number): Promise<UserEntity | null>;
 }

@@ -160,5 +160,9 @@ export class UserService {
         return users
     }
 
+    async getCurrentUser(id: number){
+        return await this.userRepository.findOne({where: { id: id}, select: ['id', 'name', 'email']})
+    }
+
 
 }

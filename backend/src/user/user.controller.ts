@@ -54,4 +54,16 @@ export class UserController {
         return this.userService.getAllUsers()
     }
 
+    @UseGuards(AuthenticatedGuard)
+    @Get('getCurrentUser')
+    async getCurrentUser(@Req() req: AuthRequest){
+        const userId = req.user?.id
+        
+        if(!userId){
+            throw new UnauthorizedException(`User not authenticated`)
+        }
+
+        return this.userService.getCurrentUser(userId)
+    }
+
 }

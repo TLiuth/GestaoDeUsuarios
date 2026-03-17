@@ -4,6 +4,7 @@ import { cookies } from "next/headers";
 import React from "react";
 import UserInfo from "@/src/components/template/UserInfo";
 import ShowUsers from "@/src/components/template/ShowUsers";
+import DashboardClient from "@/src/components/template/DashboardClient";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:3001";
 
@@ -33,9 +34,8 @@ export default async function page() {
   return (
     <Pagina>
       <div className="flex flex-col items-center justify-center">
-        <div className="boxedDashboard">
-          <UserInfo></UserInfo>
-          <ShowUsers></ShowUsers>
+        <div className="boxedDashboard flex flex-col">
+          <DashboardClient />
         </div>
       </div>
     </Pagina>

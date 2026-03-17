@@ -1,4 +1,4 @@
-import { User } from "@/src/services/getUsersList";
+import getUsersList, { User } from "@/src/services/getUsersList";
 import React, { useState } from "react";
 
 export type SortKey = "id" | "name" | "email";
@@ -27,8 +27,27 @@ export default function useShowUsers() {
     });
   }
 
+  async function fetchUsers() {
+    try {
+      const users = await getUsersList();
+      setUsers(users);
+      setError("");
+    } catch {
+      setError("Could not load users.");
+    }
+  }
+
   function addUser() {
     console.log("adding user");
   }
-  return { usersList, setUsers, error, setError, sortKey, sortUsers, addUser };
+  return {
+    usersList,
+    setUsers,
+    error,
+    setError,
+    sortKey,
+    sortUsers,
+    addUser,
+    fetchUsers,
+  };
 }
